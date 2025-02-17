@@ -1,72 +1,79 @@
 # SMTP Mail Server Setup
 
-Setting up an iRedMail server for a custom domain
+**Setting up an iRedMail server for a custom domain**
 
-Prerequisites:
+**Prerequisites:**
 
 A Contabo VPS.
 
 A domain name that you want to use for your email server.
 
-Contabo:
+**Contabo:**
 
 Set up a Virtual Private Server (VPS) with Ubuntu to run iRedMail.
 
+![image](https://github.com/user-attachments/assets/7890c207-eeb4-4a4b-a44e-18289f4efd92)
 
 
-Set up reverse DNS:
+**Set up reverse DNS:**
 
 This will allow us to access your VPS public IP with the domain name. To do this, we must update the reverse DNS records for the VPS as below.
 
+![image](https://github.com/user-attachments/assets/8d41cf49-acd0-46f5-9c00-85dabdc31de5)
 
 
-Connect to the VPS using SSH:
+**Connect to the VPS using SSH:**
 
 We can use PowerShell to connect to the VPS. To do this, open PowerShell and run the following command: ssh root@31.220.95.22 (Contabo public IP)
 
+![image](https://github.com/user-attachments/assets/88c4c205-3e67-49f5-9ccf-1d8d212966ad)
 
 
-Change the hostname of the VPS:
+**Change the hostname of the VPS:**
 
 To do this, run the following command: hostnamectl set-hostname mail.securemailhub.me
+![image](https://github.com/user-attachments/assets/1aee390b-8f41-44d2-8e73-174bcd8b9719)
 
 
 
-Update the /etc/hosts file:
+**Update the /etc/hosts file:**
 
 To do this, open the /etc/hosts file in a text editor and add the following line:
 
+![image](https://github.com/user-attachments/assets/0ae6771c-f1a0-4266-992d-63fbb1082dd2)
 
 
 
 
 Next, I updated the Ubuntu packages and installed gzip using the following command:
 
-sudo apt update && sudo apt upgrade -y
+**sudo apt update && sudo apt upgrade -y**
 
-apt install gzip
+**apt install gzip**
 
+![image](https://github.com/user-attachments/assets/a4aaea5f-f854-4b8a-b804-b0b9bad11db2)
 
-
+![image](https://github.com/user-attachments/assets/aa32e1cf-c4d5-4ec1-9846-00e0c26f03a8)
 
 
 
 I then downloaded the latest version of iRedMail using:
 
-wget  
+**wget https://github.com/iredmail/iRedMail/archive/refs/tags/1.6.6.tar.gz**  
 
 
-
-
+![image](https://github.com/user-attachments/assets/405723c7-2835-4a8a-92fd-586f53d84959)
 
 
 
 I extracted the tar file using tar zxvf 1.6.6.tar.gz.
 
+![image](https://github.com/user-attachments/assets/21d16fd1-fa8b-43af-a72c-bad48325c5c6)
 
 
 I then installed iRedMail using command: bash iRedMail.sh
 
+![image](https://github.com/user-attachments/assets/c6862be3-0aad-499a-a606-93589bcea6b4)
 
 
 
@@ -78,35 +85,49 @@ I opted for NGINX for the web server and MariaDB for the database.
 
 
 
+![image](https://github.com/user-attachments/assets/df580b6b-9058-4313-a055-784987cc7ddd)
+
+![image](https://github.com/user-attachments/assets/001f43de-dba7-40cd-9903-4ac27e008b23)
+
+![image](https://github.com/user-attachments/assets/c7ef565e-4471-40ab-a402-98ee8d246902)
+
 
 
 
 I provided my first mail domain name as securemailhub.me.
 
+![image](https://github.com/user-attachments/assets/e4ba6f7f-5f99-4ded-928f-e477169034f2)
 
+![image](https://github.com/user-attachments/assets/00abaeeb-91af-45de-869c-64cbf8f1616d)
 
+![image](https://github.com/user-attachments/assets/3a862220-9aff-4adf-97b6-559ffc291377)
  
+![image](https://github.com/user-attachments/assets/0e4487bc-9ade-47e2-b868-bc9cbd0cfcb1)
 
 
 
 After the installation was complete, I got the DKIM records using the following command: 
 
-amavisd-new showkeys
+**amavisd-new showkeys**
 
+
+![image](https://github.com/user-attachments/assets/a2e5146a-5413-4383-b76a-0216c71fd9cd)
 
 
 
 
 I then installed SSL by installing two essential packages on my system, certbot and python3-certbot-nginx, using the following command:
 
-apt install certbot python3-certbot-nginx -y
+**apt install certbot python3-certbot-nginx -y**
 
+![image](https://github.com/user-attachments/assets/aa83a8b0-0293-47ad-ba92-91d6bb8df17e)
 
 
 To generate the SSL certificate, I utilized Certbot using the following command:
 
-certbot certonly --webroot -d mail.securemailhub.me -w /var/www/html
+**certbot certonly --webroot -d mail.securemailhub.me -w /var/www/html**
 
+![image](https://github.com/user-attachments/assets/cbcf1da4-76a1-4605-921d-9cdee95d865e)
 
 
 After obtaining the SSL certificate, we must configure my server applications to use it. Certbot stores my SSL certificate files in a specific directory, which is /etc/letsencrypt/live/ on my Linux system.
@@ -115,6 +136,11 @@ To configure my server applications to use the SSL certificate, I typically poin
 
 
 
+![image](https://github.com/user-attachments/assets/f4556099-ebb8-46b4-8e31-a57f809831e7)
+
+![image](https://github.com/user-attachments/assets/f38e2237-b995-4794-b8c6-908e11a60a5e)
+
+![image](https://github.com/user-attachments/assets/bf64d641-f96b-4e27-ae47-5eb3394cf545)
 
 
 
@@ -122,14 +148,18 @@ To configure my server applications to use the SSL certificate, I typically poin
 Finally, I restarted iRedMail, Nginx, postfix, and dovecot and rebooted the VPS machine.
 
 
+![image](https://github.com/user-attachments/assets/7a2cb98f-7014-4f6b-9feb-4b37b946850f)
 
 
 
 
-Setting up DNS records at domain:
+**Setting up DNS records at domain:**
 
 Updated Dmarc, DKIM and SPF records as below.
 
+![image](https://github.com/user-attachments/assets/dc3c0c0b-658c-4f46-b7f1-805978285f5f)
+
+![image](https://github.com/user-attachments/assets/dd7bd95e-cd15-4316-8096-b0b4a6257a68)
 
 
 
@@ -138,6 +168,9 @@ Updated Dmarc, DKIM and SPF records as below.
 We can access the admin panel from mail.securemailhub.me/iredadmin. Admin can add new users and manage the mail server settings.
 
 
+![image](https://github.com/user-attachments/assets/d5cf5196-bbdf-4303-abe5-c2bb658db316)
+
+![image](https://github.com/user-attachments/assets/c26d8a9b-81ef-4b0a-b773-aab47abea220)
 
 
 
@@ -148,7 +181,9 @@ We can access the admin panel from mail.securemailhub.me/iredadmin. Admin can ad
 Adding new user for the new custom domain.
 
 
+![image](https://github.com/user-attachments/assets/0f0bedbe-6ed3-4099-9eb3-9c64f51a21bb)
 
+![image](https://github.com/user-attachments/assets/c2182b5a-b913-4c00-9419-a879c4d80017)
 
 
 
@@ -159,19 +194,23 @@ We can access the mail client from mail.securemailhub.me/mail. User should log i
 
 
 
+![image](https://github.com/user-attachments/assets/93cedd82-f5bb-48c0-8579-112aaca7b6f7)
+
+![image](https://github.com/user-attachments/assets/88c604c1-36dc-4009-b0a7-1b0eab2f3153)
 
 
 
 
-
-Mail results:
+**Mail results:**
 
 Mail sent to TA
 
+![image](https://github.com/user-attachments/assets/d3a4b92c-d254-481d-8207-5fe1afecbb54)
 
 
 Mail received from the TA.
 
+![image](https://github.com/user-attachments/assets/052606e9-0f85-4af2-8ecd-86841218cd4e)
 
 
 a. A domain name is required to create an SMTP mail server because it serves as the unique identifier for your email server. It is used to route emails to the correct server and to authenticate the server when sending emails. 
@@ -236,75 +275,3 @@ POP3: 995
 SMTP: 587
 
 If you are using a non-standard port number for any of these services, you will need to configure the corresponding port number in your mail client. 
-
-
-
-## Screenshots
-![Screenshot 1](screenshot_1.png)
-
-![Screenshot 2](screenshot_2.png)
-
-![Screenshot 3](screenshot_3.png)
-
-![Screenshot 4](screenshot_4.png)
-
-![Screenshot 5](screenshot_5.png)
-
-![Screenshot 6](screenshot_6.png)
-
-![Screenshot 7](screenshot_7.png)
-
-![Screenshot 8](screenshot_8.png)
-
-![Screenshot 9](screenshot_9.png)
-
-![Screenshot 10](screenshot_10.png)
-
-![Screenshot 11](screenshot_11.png)
-
-![Screenshot 12](screenshot_12.png)
-
-![Screenshot 13](screenshot_13.png)
-
-![Screenshot 14](screenshot_14.png)
-
-![Screenshot 15](screenshot_15.png)
-
-![Screenshot 16](screenshot_16.png)
-
-![Screenshot 17](screenshot_17.png)
-
-![Screenshot 18](screenshot_18.png)
-
-![Screenshot 19](screenshot_19.png)
-
-![Screenshot 20](screenshot_20.png)
-
-![Screenshot 21](screenshot_21.png)
-
-![Screenshot 22](screenshot_22.png)
-
-![Screenshot 23](screenshot_23.png)
-
-![Screenshot 24](screenshot_24.png)
-
-![Screenshot 25](screenshot_25.png)
-
-![Screenshot 26](screenshot_26.png)
-
-![Screenshot 27](screenshot_27.png)
-
-![Screenshot 28](screenshot_28.png)
-
-![Screenshot 29](screenshot_29.png)
-
-![Screenshot 30](screenshot_30.png)
-
-![Screenshot 31](screenshot_31.png)
-
-![Screenshot 32](screenshot_32.png)
-
-![Screenshot 33](screenshot_33.png)
-
-![Screenshot 34](screenshot_34.png)
-
